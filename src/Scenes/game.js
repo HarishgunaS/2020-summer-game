@@ -30,7 +30,6 @@ class Game extends Phaser.Scene
     }
     create ()
     {
-        console.log("here");
         this.anims.create({
             key: 'goblin_walk',
             frames: this.anims.generateFrameNumbers('goblin', {start: 0, end: 10}),
@@ -41,6 +40,7 @@ class Game extends Phaser.Scene
         this.map = this.add.tileSprite(game.config.width/2, game.config.height/2, 2*game.config.width,2*game.config.height,'grass')
         this.enemy = this.add.sprite(50, 50, 'goblin');
         this.enemy.play('goblin_walk');
+        
         this.player_data = {x:game.config.width/2, y:game.config.height/2, speed:150, health:100}
         this.player = new Player(this, this.player_data, 'player');
         this.cursors = this.input.keyboard.createCursorKeys();
