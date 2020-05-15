@@ -3,15 +3,15 @@ class HUD
     constructor(scene, player)
     {
         this.player = player;
-        this.health = scene.add.text(50,50,'Health: ' + this.player.getHealth());
+        this.health = scene.add.text(50,50,'Health: ' + this.player.info.health + ' Mana: ' + this.player.info.mana);
         this.health.setScrollFactor(0);
-        this.coordinates = scene.add.text(550, 50, 'Coordinates: ' + Math.round(this.player.getSprite().x) + ", " + Math.round(this.player.getSprite().y));
+        this.coordinates = scene.add.text(550, 50, 'Coordinates: ' + Math.round(this.player.x) + ", " + Math.round(this.player.y));
         this.coordinates.setScrollFactor(0);
     }
     update()
     {
-        this.health.setText('Health: ' + this.player.getHealth());
-        this.coordinates.setText('Coordinates: ' + Math.round(this.player.getSprite().x) + ", " + Math.round(this.player.getSprite().y));
+        this.health.setText('Health: ' + this.player.info.health + ' Mana: ' + this.player.info.mana);
+        this.coordinates.setText('Coordinates: ' + Math.round(this.player.x) + ", " + Math.round(this.player.y));
     }
 }
 class Game extends Phaser.Scene
@@ -30,7 +30,6 @@ class Game extends Phaser.Scene
     }
     create ()
     {
-        console.log("here");
         this.anims.create({
             key: 'goblin_walk',
             frames: this.anims.generateFrameNumbers('goblin', {start: 0, end: 10}),
@@ -39,17 +38,41 @@ class Game extends Phaser.Scene
         });
         this.add.text(20,20,"playing game");
         this.map = this.add.tileSprite(game.config.width/2, game.config.height/2, 2*game.config.width,2*game.config.height,'grass')
-        this.enemy = this.add.sprite(50, 50, 'goblin');
-        this.enemy.play('goblin_walk');
-        this.player_data = {x:game.config.width/2, y:game.config.height/2, speed:150, health:100}
-        this.player = new Player(this, this.player_data, 'player');
-        this.cursors = this.input.keyboard.createCursorKeys();
+        
+        
+        
+        this.enemy_info = {id:1, x:50, y:50, attack:10, health: 50, mana:30, maxMana:30};
+        this.enemy = new Enemy(this, this.enemy_info, 'goblin');
+        
+        //enemies = this.physics.add.group()
+        
+        this.player_info = {id:0, x:game.config.width/2, y:game.config.height/2, speed:150, current_speed:150, health:100, maxHealth:100, attack: 20, mana:20, maxMana:20}
+        this.player = new Player(this, this.player_info, 'player');
+
+        this.physics.add.overlap(this.player, this.enemy, function (p, e)
+        {
+            if (this.cursors.space.isDown)
+            {
+                p.attack(e);
+            }
+            e.attack(p);
+        }, 
+        null,
+        this);
+
+        this.cursors = this.input.keyboard.addKeys(
+            {up:Phaser.Input.Keyboard.KeyCodes.W,
+            down:Phaser.Input.Keyboard.KeyCodes.S,
+            left:Phaser.Input.Keyboard.KeyCodes.A,
+            right:Phaser.Input.Keyboard.KeyCodes.D,
+            space:Phaser.Input.Keyboard.KeyCodes.SPACE});
         this.hud = new HUD(this, this.player);
         this.physics.world.setBounds(game.config.width/(-2) , game.config.height/-2, game.config.width*2,game.config.height*2);
     }
     update ()
     {
         this.player.update(this.cursors);
+        this.enemy.update(this.enemy.info);
         this.hud.update();
     }
 }

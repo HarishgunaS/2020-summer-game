@@ -1,47 +1,54 @@
-class Player 
+class Player extends Entity
 {
-    constructor(scene, data, sprite_key)
+    constructor(scene, info, sprite_key)
     {
-        this.speed = data.speed;
-        this.health = data.health;
-        this.sprite = scene.physics.add.sprite(data.x, data.y, sprite_key);
-        this.sprite.setCollideWorldBounds(true);
-        scene.cameras.main.startFollow(this.sprite);
-    }
+        super(scene, info, sprite_key);
+        this.scene = scene;
+        scene.cameras.main.startFollow(this);
+    };
     update(cursors)
     {
+        super.update(this.info);
+        if (cursors.space.isDown)
+        {
+            this.info.mana = 0;
+        }
+        if(this.info.health <= 0)
+        {
+            return;
+        }
+        if ((cursors.down.isDown || cursors.up.isDown) && (cursors.left.isDown || cursors.right.isDown))
+        {
+            this.info.current_speed = this.info.speed/(Math.sqrt(2));
+        }
+        else
+        {
+            this.info.current_speed = this.info.speed;
+        };
         if (cursors.down.isDown)
         {
-            this.sprite.setVelocityY(this.speed);
+            this.body.setVelocityY(this.info.current_speed);
         }
         else if (cursors.up.isDown)
         {
-            this.sprite.setVelocityY(-this.speed);
+            this.body.setVelocityY(-this.info.current_speed);
         }
         else
         {
-            this.sprite.setVelocityY(0);
-        }
+            this.body.setVelocityY(0);
+        };
 
         if (cursors.right.isDown)
         {
-            this.sprite.setVelocityX(this.speed);
+            this.body.setVelocityX(this.info.current_speed);
         }
         else if (cursors.left.isDown)
         {
-            this.sprite.setVelocityX(-this.speed);
+            this.body.setVelocityX(-this.info.current_speed);
         }
         else
         {
-            this.sprite.setVelocityX(0);
+            this.body.setVelocityX(0);
         }
-    }
-    getSprite()
-    {
-        return this.sprite;
-    }
-    getHealth()
-    {
-        return this.health;
     }
 }
