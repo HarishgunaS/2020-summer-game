@@ -9,10 +9,6 @@ class Player extends Entity
     update(cursors)
     {
         super.update(this.info);
-        if (cursors.space.isDown)
-        {
-            this.info.mana = 0;
-        }
         if(this.info.health <= 0)
         {
             return;

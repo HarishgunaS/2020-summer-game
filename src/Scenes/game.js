@@ -30,6 +30,12 @@ class Game extends Phaser.Scene
     }
     create ()
     {
+        this.clock = false;
+        this.enemyCount = 1;
+        this.enemyClk = this.time.addEvent({delay: 1000, callback: function()
+            {
+                this.clock = true;
+            }, callbackScope: this, loop:true})
         this.anims.create({
             key: 'goblin_walk',
             frames: this.anims.generateFrameNumbers('goblin', {start: 0, end: 10}),
@@ -44,18 +50,20 @@ class Game extends Phaser.Scene
         this.enemy_info = {id:1, x:50, y:50, attack:10, health: 50, mana:30, maxMana:30};
         this.enemy = new Enemy(this, this.enemy_info, 'goblin');
         
-        //enemies = this.physics.add.group()
+        enemies = this.physics.add.group();
         
         this.player_info = {id:0, x:game.config.width/2, y:game.config.height/2, speed:150, current_speed:150, health:100, maxHealth:100, attack: 20, mana:20, maxMana:20}
         this.player = new Player(this, this.player_info, 'player');
-
         this.physics.add.overlap(this.player, this.enemy, function (p, e)
         {
-            if (this.cursors.space.isDown)
+            if (Phaser.Input.Keyboard.JustDown(this.cursors.space))
             {
                 p.attack(e);
             }
-            e.attack(p);
+            if(this.clock)
+            {
+                e.attack(p);
+            }
         }, 
         null,
         this);
@@ -71,6 +79,7 @@ class Game extends Phaser.Scene
     }
     update ()
     {
+        this.clock = false;
         this.player.update(this.cursors);
         this.enemy.update(this.enemy.info);
         this.hud.update();

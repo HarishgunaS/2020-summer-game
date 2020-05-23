@@ -28,16 +28,16 @@ class Entity extends Phaser.GameObjects.Sprite
             this.destroy();
             return;
         }
-        console.log("ID: " + this.info.id + ", mana: " + this.info.mana);
     }
     attack(e)
     {
-        if (this.info.mana >= this.info.maxMana)
+        /*if (this.info.mana >= this.info.maxMana)
         {
-            e.info.attackedBy = this.info.id;
-            e.info.health -= this.info.attack;
+            
             this.info.mana = 0;
-        }
+        }*/
+        e.info.attackedBy = this.info.id;
+        e.info.health -= this.info.attack;
         
     }
 };
