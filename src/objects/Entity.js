@@ -17,13 +17,13 @@ class Entity extends Phaser.GameObjects.Sprite
     {
         return this.health;
     }
-    update(info)
+    update()
     {
-        if(info.mana < info.maxMana)
+        if(this.info.mana < this.info.maxMana)
         {
-            info.mana += 1;
+            this.info.mana += 1;
         }
-        if(info.health <= 0)
+        if(this.info.health <= 0)
         {
             this.destroy();
             return;

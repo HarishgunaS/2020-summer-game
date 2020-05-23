@@ -8,7 +8,7 @@ class Player extends Entity
     };
     update(cursors)
     {
-        super.update(this.info);
+        super.update();
         if(this.info.health <= 0)
         {
             return;

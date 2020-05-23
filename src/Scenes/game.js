@@ -44,17 +44,21 @@ class Game extends Phaser.Scene
         });
         this.add.text(20,20,"playing game");
         this.map = this.add.tileSprite(game.config.width/2, game.config.height/2, 2*game.config.width,2*game.config.height,'grass')
+              
+        this.enemies = this.physics.add.group();
         
-        
-        
-        this.enemy_info = {id:1, x:50, y:50, attack:10, health: 50, mana:30, maxMana:30};
-        this.enemy = new Enemy(this, this.enemy_info, 'goblin');
-        
-        enemies = this.physics.add.group();
+        for (var i = 0; i < 10; i++)
+        {
+            var info = {id:1+i, x:Phaser.Math.Between(-350, 1150), y:Phaser.Math.Between(-250, 850), attack:10, health: 50, mana:30, maxMana:30};
+            this.enemies.add(new Enemy(this, info, 'goblin'));
+        }
+
+
+        this.enemies.runChildUpdate = true;
         
         this.player_info = {id:0, x:game.config.width/2, y:game.config.height/2, speed:150, current_speed:150, health:100, maxHealth:100, attack: 20, mana:20, maxMana:20}
         this.player = new Player(this, this.player_info, 'player');
-        this.physics.add.overlap(this.player, this.enemy, function (p, e)
+        this.physics.add.overlap(this.player, this.enemies, function (p, e)
         {
             if (Phaser.Input.Keyboard.JustDown(this.cursors.space))
             {
@@ -81,7 +85,6 @@ class Game extends Phaser.Scene
     {
         this.clock = false;
         this.player.update(this.cursors);
-        this.enemy.update(this.enemy.info);
         this.hud.update();
     }
 }

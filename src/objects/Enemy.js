@@ -4,8 +4,8 @@ class Enemy extends Entity
     {
         super(scene, info, sprite_key);
     };
-    update(info)
+    update()
     {
-        super.update(info);
+        super.update();
     }   
 }
