@@ -33,30 +33,55 @@ class Game extends Phaser.Scene
         this.clock = false;
         this.enemyCount = 1;
         this.enemyClk = this.time.addEvent({delay: 1000, callback: function()
+        {
+            this.clock = true;
+            this.enemies.getChildren().forEach(function(enemy)
             {
-                this.clock = true;
-            }, callbackScope: this, loop:true})
+                let direction = Phaser.Math.Between(0,3);
+                if(direction == 0)
+                {
+                    enemy.body.setVelocityX(enemy.info.speed);
+                    enemy.body.setVelocityY(0);
+                }
+                else if(direction == 1)
+                {
+                    enemy.body.setVelocityX(-1*enemy.info.speed);
+                    enemy.body.setVelocityY(0);
+                }
+                else if(direction == 2)
+                {
+                    enemy.body.setVelocityY(enemy.info.speed);
+                    enemy.body.setVelocityX(0);
+                }
+                else
+                {
+                    enemy.body.setVelocityY(-1*enemy.info.speed);
+                    enemy.body.setVelocityX(0);
+                }
+
+
+            }, this);
+        }, callbackScope: this, loop:true});
         this.anims.create({
             key: 'goblin_walk',
             frames: this.anims.generateFrameNumbers('goblin', {start: 0, end: 10}),
             frameRate: 10,
             repeat: -1
         });
-        this.add.text(20,20,"playing game");
         this.map = this.add.tileSprite(game.config.width/2, game.config.height/2, 2*game.config.width,2*game.config.height,'grass')
               
         this.enemies = this.physics.add.group();
         
         for (var i = 0; i < 10; i++)
         {
-            var info = {id:1+i, x:Phaser.Math.Between(-350, 1150), y:Phaser.Math.Between(-250, 850), attack:10, health: 50, mana:30, maxMana:30};
+            var info = {id:1+i, x:Phaser.Math.Between(-350, 1150), y:Phaser.Math.Between(-250, 850), speed: 50, attack:10, health: 50, mana:30, maxMana:30, attackedBy:null};
             this.enemies.add(new Enemy(this, info, 'goblin'));
         }
 
 
         this.enemies.runChildUpdate = true;
         
-        this.player_info = {id:0, x:game.config.width/2, y:game.config.height/2, speed:150, current_speed:150, health:100, maxHealth:100, attack: 20, mana:20, maxMana:20}
+        this.player_info = {id:0, x:game.config.width/2, y:game.config.height/2, speed:150, current_speed:150, health:100, maxHealth:100, attack: 20, mana:20, maxMana:20, attackedBy:null};
         this.player = new Player(this, this.player_info, 'player');
         this.physics.add.overlap(this.player, this.enemies, function (p, e)
         {
