@@ -27,6 +27,10 @@ class Game extends Phaser.Scene
         this.load.spritesheet('goblin', 'assets/goblin.png',{
             frameWidth: 64, frameHeight: 64
         });
+
+        //Hassam Code, why not have a BootScene to preload assets and reduce clutter once more assets are used?
+        this.load.image('potion', 'assets/dontSueMeHP.png') //Preferably will be changed to something not copyrighted, also another option could be to make a spritesheet of items
+
     }
     create ()
     {
@@ -96,6 +100,13 @@ class Game extends Phaser.Scene
         }, 
         null,
         this);
+
+        //More trashy Hassam code
+        this.potion = new Potion(this, 100, 100, 'potion'); //Spawn system can be enhanced
+        this.physics.add.overlap(this.player, this.potion, function(){ //Could add some logic to make it up only if a key is pressed
+            this.player.info.health += this.potion.healing; //Could add a cap to how much can be healed
+            this.potion.destroy(); //can make something more efficient
+        },null,this);
 
         this.cursors = this.input.keyboard.addKeys(
             {up:Phaser.Input.Keyboard.KeyCodes.W,
