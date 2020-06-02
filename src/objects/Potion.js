@@ -1,5 +1,5 @@
 class Potion extends Phaser.Physics.Arcade.Image {
-    constructor(scene, x, y, key) {
+    constructor(scene, x, y, key) { //Future idea could be to add a healing parameter or have different categories of potions
         super(scene, x, y, key);
 
         this.scene = scene;
