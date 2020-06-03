@@ -13,6 +13,8 @@ class Player extends Entity
         {
             return;
         }
+
+        //Movement logic
         if ((cursors.down.isDown || cursors.up.isDown) && (cursors.left.isDown || cursors.right.isDown))
         {
             this.info.current_speed = this.info.speed/(Math.sqrt(2));
@@ -45,6 +47,15 @@ class Player extends Entity
         else
         {
             this.body.setVelocityX(0);
+        }
+
+        //Potion or rudementary item use logic
+        if(cursors.use.isDown && this.info.potionCount > 0)
+        {
+            this.info.potionCount--;
+            this.info.health += 10;//Arbitrary number for now, can be updated to account for different potion types or become percentage
+            //I'm gonna assume that the game fixes health already if it is above the cap, otherwise one can add that logic here as well
+
         }
     }
 }

@@ -3,14 +3,14 @@ class HUD
     constructor(scene, player)
     {
         this.player = player;
-        this.health = scene.add.text(50,50,'Health: ' + this.player.info.health + ' Mana: ' + this.player.info.mana);
+        this.health = scene.add.text(50,50,'Health: ' + this.player.info.health + ' Mana: ' + this.player.info.mana + ' Potions: ' + this.player.info.potionCount);
         this.health.setScrollFactor(0);
         this.coordinates = scene.add.text(550, 50, 'Coordinates: ' + Math.round(this.player.x) + ", " + Math.round(this.player.y));
         this.coordinates.setScrollFactor(0);
     }
     update()
     {
-        this.health.setText('Health: ' + this.player.info.health + ' Mana: ' + this.player.info.mana);
+        this.health.setText('Health: ' + this.player.info.health + ' Mana: ' + this.player.info.mana + ' Potions: ' + this.player.info.potionCount); //Can find better place for potion counter but I'm lazy and it'll be changed later anyways
         this.coordinates.setText('Coordinates: ' + Math.round(this.player.x) + ", " + Math.round(this.player.y));
     }
 }
@@ -34,6 +34,7 @@ class Game extends Phaser.Scene
     }
     create ()
     {
+
         this.clock = false;
         this.enemyCount = 1;
         this.enemyClk = this.time.addEvent({delay: 1000, callback: function()
@@ -85,7 +86,7 @@ class Game extends Phaser.Scene
 
         this.enemies.runChildUpdate = true;
         
-        this.player_info = {id:0, x:game.config.width/2, y:game.config.height/2, speed:150, current_speed:150, health:100, maxHealth:100, attack: 20, mana:20, maxMana:20, attackedBy:null};
+        this.player_info = {id:0, x:game.config.width/2, y:game.config.height/2, speed:150, current_speed:150, health:100, maxHealth:100, attack: 20, mana:20, maxMana:20, attackedBy:null, potionCount:0};
         this.player = new Player(this, this.player_info, 'player');
         this.physics.add.overlap(this.player, this.enemies, function (p, e)
         {
@@ -101,10 +102,16 @@ class Game extends Phaser.Scene
         null,
         this);
 
+        this.events.on('deadGoblin', function(info) { //Code doesn't work
+            this.potion = new Potion(this, info.x, info.y, 'potion');
+            console.log("working");
+        });
+
         //More trashy Hassam code
-        this.potion = new Potion(this, 100, 100, 'potion'); //Spawn system can be enhanced
+        //this.potion = new Potion(this, 100, 100, 'potion'); //Spawn system can be enhanced
         this.physics.add.overlap(this.player, this.potion, function(){ //Could add some logic to make it up only if a key is pressed
-            this.player.info.health += this.potion.healing; //Could add a cap to how much can be healed
+            this.player.info.potionCount++;
+            //this.player.info.health += this.potion.healing; //Could add a cap to how much can be healed
             this.potion.destroy(); //can make something more efficient
         },null,this);
 
@@ -113,14 +120,18 @@ class Game extends Phaser.Scene
             down:Phaser.Input.Keyboard.KeyCodes.S,
             left:Phaser.Input.Keyboard.KeyCodes.A,
             right:Phaser.Input.Keyboard.KeyCodes.D,
+            use:Phaser.Input.Keyboard.KeyCodes.U, //U to use a potion, can remap to something else later
             space:Phaser.Input.Keyboard.KeyCodes.SPACE});
         this.hud = new HUD(this, this.player);
         this.physics.world.setBounds(game.config.width/(-2) , game.config.height/-2, game.config.width*2,game.config.height*2);
     }
+
     update ()
     {
         this.clock = false;
         this.player.update(this.cursors);
         this.hud.update();
     }
+
+    
 }
