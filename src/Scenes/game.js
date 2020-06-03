@@ -122,5 +122,9 @@ class Game extends Phaser.Scene
         this.clock = false;
         this.player.update(this.cursors);
         this.hud.update();
+        this.enemies.getChildren().forEach(function(enemy)
+        {
+            enemy.update();
+        });
     }
 }
