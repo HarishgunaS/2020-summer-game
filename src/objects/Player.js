@@ -50,7 +50,7 @@ class Player extends Entity
         }
 
         //Potion or rudementary item use logic
-        if(cursors.use.isDown && this.info.potionCount > 0)
+        if(Phaser.Input.Keyboard.JustDown(cursors.use) && this.info.potionCount > 0)
         {
             this.info.potionCount--;
             this.info.health += 10;//Arbitrary number for now, can be updated to account for different potion types or become percentage

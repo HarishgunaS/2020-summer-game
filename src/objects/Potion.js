@@ -1,4 +1,4 @@
-class Potion extends Phaser.Physics.Arcade.Image {
+class Potion extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, key) { //Future idea could be to add a healing parameter or have different categories of potions
         super(scene, x, y, key);
 

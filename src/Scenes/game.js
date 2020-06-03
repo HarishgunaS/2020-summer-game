@@ -102,17 +102,15 @@ class Game extends Phaser.Scene
         null,
         this);
 
-        this.events.on('deadGoblin', function(info) { //Code doesn't work
-            this.potion = new Potion(this, info.x, info.y, 'potion');
-            console.log("working");
+        this.events.on('deadEnemy', function(info, scene) { //Code doesn't work
+            scene.potions.add(new Potion(scene, info.x, info.y, 'potion'));
         });
 
-        //More trashy Hassam code
-        //this.potion = new Potion(this, 100, 100, 'potion'); //Spawn system can be enhanced
-        this.physics.add.overlap(this.player, this.potion, function(){ //Could add some logic to make it up only if a key is pressed
-            this.player.info.potionCount++;
-            //this.player.info.health += this.potion.healing; //Could add a cap to how much can be healed
-            this.potion.destroy(); //can make something more efficient
+        this.potions = this.physics.add.group();
+
+        this.physics.add.overlap(this.player, this.potions, function(player, potion){ //Could add some logic to make it up only if a key is pressed
+            player.info.potionCount++;
+            potion.destroy();
         },null,this);
 
         this.cursors = this.input.keyboard.addKeys(

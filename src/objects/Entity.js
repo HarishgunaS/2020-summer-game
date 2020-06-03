@@ -9,7 +9,7 @@ class Entity extends Phaser.GameObjects.Sprite
         super(scene, info.x, info.y, sprite_key)
         this.info = info;
         scene.add.existing(this);
-        scene.physics.world.enable(this);      
+        scene.physics.world.enable(this);
         this.body.setCollideWorldBounds(true);
 
     };
@@ -25,9 +25,6 @@ class Entity extends Phaser.GameObjects.Sprite
         }
         if(this.info.health <= 0)
         {
-           // this.events.emit('deadGoblin', this.info); //Sends an event that says that a goblin has been killed, so spawn a potion/gain exp or whatever is desired
-            console.log("kill");
-            
             this.destroy();
             return;
         }
