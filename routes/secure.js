@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-
+//two more *secured* routers
 router.post('/submit-score', (req, res, next) => {
     res.status(200);
     res.json({ 'status': 'ok' });
