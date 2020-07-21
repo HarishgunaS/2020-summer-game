@@ -27,6 +27,7 @@ router.post('/signup',function (req,res,next){
         }else{
             console.log(user.username+ " has been added to database");
             passport.authenticate("local")(req,res,function () {
+                console.log(user);
                 res.redirect("/");
 
             })
@@ -38,16 +39,24 @@ router.post('/signup',function (req,res,next){
 });
 
 router.post('/', passport.authenticate("local",{
-    successRedirect:"/",
-    failureRedirect:"/login"
-}));
+
+    failureRedirect:"/login"}), (req,res)=>{
+    console.log(req.body.username);
+    res.render("index", {username: req.body.username});
+
+}
+);
 
 router.post('/logout', function(req, res, next){
     req.logout();
     res.status(200);
     res.json({ 'status': 'ok' });
 });
-
+router.get('/logout', function (req, res){
+    req.session.destroy(function (err) {
+        res.redirect('/'); //Inside a callback… bulletproof!
+    });
+});
 router.post('/token', function(req, res, next){
     res.status(200);
     res.json({ 'status': 'ok' });

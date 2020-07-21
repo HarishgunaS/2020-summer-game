@@ -6,6 +6,7 @@ require("dotenv").config();
 let express         = require("express");
 let app             = express();
 let bodyParser      = require("body-parser");
+let socket          = require("socket.io");
     //``````````````````````````````````````````````
     app.use(bodyParser.urlencoded({extended:true}));
     //``````````````````````````````````````````````
@@ -43,6 +44,7 @@ app.use("/src",express.static("src"));
 app.use("/src",express.static("src"));
 app.use("/css",express.static("css"));
 app.use("/assets",express.static("assets"));
+app.use("/game_chat",express.static("game_chat"));
 
 
 
@@ -92,7 +94,21 @@ app.use(function (error,req,res,next){
 //localhost:3000 is being used for testing purpose
 //Harish knows the port of the deployment program
 
-app.listen(3000,function () {
+let server = app.listen(3000,function () {
     console.log("Server working.");
 
 });
+
+//Backend CHAT program
+//chat program listening to port 3000
+let io = socket(server);
+io.on("connection", function (socket) {
+    console.log("SOCKET WORKING !!Connection made:"+socket.id);
+
+
+    socket.on("chat", function (mssgObject) {
+        console.log("this works");
+        io.sockets.emit('chat', mssgObject)
+
+    })
+})

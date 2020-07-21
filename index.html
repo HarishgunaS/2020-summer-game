@@ -2,18 +2,33 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script> 
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
         <script src="src/Scenes/game.js"></script>
         <script src="src/objects/Entity.js"></script>
         <script src="src/objects/Player.js"></script>
         <script src="src/objects/Enemy.js"></script>
         <script src="src/objects/Potion.js"></script>
-<!--        <link rel="stylesheet" href="css/style.css" type="text/css">-->
+        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="game_chat/styles.css">
         <title>2020 GameDev Project</title>
     </head>
     <body>
         <h1>Lux Infinitas or something</h1>
         <script src="src/main.js"></script>
         <p>WASD to move, space to attack</p>
+
+
+<!--    CHAT WINDOW-->
+    <div id="harish-chat">
+        <div id="chat-window">
+            <div id="output"></div>
+
+        </div>
+        <input type="text" id="handle" placeholder="Handle">
+        <input type="text" id="message" placeholder="Message">
+        <button id="send">Send</button>
+    </div>
+        <script src="game_chat/chat.js"></script>
     </body>
 </html>
