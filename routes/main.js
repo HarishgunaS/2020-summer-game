@@ -25,10 +25,12 @@ router.post('/signup',function (req,res,next){
         if(err){
             console.log(err.message);
         }else{
+
             console.log(user.username+ " has been added to database");
             passport.authenticate("local")(req,res,function () {
                 console.log(user);
-                res.redirect("/");
+                req.session.message = user.username;
+                res.redirect("/",);
 
             })
         }
@@ -42,7 +44,12 @@ router.post('/', passport.authenticate("local",{
 
     failureRedirect:"/login"}), (req,res)=>{
     console.log(req.body.username);
-    res.render("index", {username: req.body.username});
+    if(!req.session.message){
+        res.render("index", {username: req.body.username});
+    }else{
+        res.render("index",{username:req.session.message});
+    }
+
 
 }
 );
@@ -73,7 +80,12 @@ router.get("/login", function (req,res) {
 
 });
 router.get("/", middleware, function (req,res) {
-    res.render("index");
+
+    if(!req.session.message){
+        res.render("index", {username: req.body.username});
+    }else{
+        res.render("index",{username:req.session.message});
+    }
 
 });
 
