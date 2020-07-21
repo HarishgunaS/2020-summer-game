@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>-->
 <!--    <script src="/socket.io/socket.io.js"></script>-->
 
@@ -14,27 +14,46 @@
 <!--    <script src="../game_chat/chat.js"></script>-->
     <link rel="stylesheet" href="../css/style.css" type="text/css">
     <link rel="stylesheet" href="../game_chat/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fondamento&family=Roboto+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <title>2020 GameDev Project</title>
 </head>
 <body>
-<h1>Lux Infinitas or something</h1>
-<script src="src/main.js"></script>
-<p>WASD to move, space to attack</p>
+<div class="container">
+    <h1 style="text-align: center; font-family: 'Fondamento', cursive; color: white; font-weight: bold">Lux Infinitas or something</h1>
 
-<!--<canvas id="chatWindow" width="200" ></canvas>-->
 
-<!--    CHAT WINDOW-->
-<form action="/logout" method="get">
-    <button>Logout</button>
-</form>
-<div id="harish-chat">
-    <div id="chat-window">
-        <div id="output"></div>
 
+    <!--<div class="game"></div>-->
+    <!--<canvas id="chatWindow" width="200" ></canvas>-->
+
+    <!--    CHAT WINDOW-->
+    <form style="text-align: right; margin-right: 5%" action="/logout" method="get">
+        <button class="btn btn-warning">Logout</button>
+    </form>
+    <div id="phaser-example"></div>
+    <p style="font-family: Roboto; font-weight: bold; color: white">WASD to move, space to attack</p>
+    <div class="row">
+        <div class="col-xs-9">
+
+            <script src="../src/main.js"></script>
+                        <div id="game"></div>
+<!--            <div id="phaser-example"></div>-->
+        </div>
+        <div class="col-xs-3 d-flex align-items-stretch" style="margin-left: 5%">
+            <div  id="harish-chat">
+                <div id="chat-window">
+                    <div id="output"></div>
+
+                </div>
+                <input type="text" id="handle" value=<%= username%> disabled>
+                <input type="text" id="message" placeholder="Message">
+                <button id="send" id class="chat-button" >Send</button>
+            </div>
+        </div>
     </div>
-    <input type="text" id="handle" value=<%= username%>>
-    <input type="text" id="message" placeholder="Message">
-    <button id="send">Send</button>
+
 </div>
 
 <script>

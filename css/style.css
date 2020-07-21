@@ -1,4 +1,7 @@
 body {
     background: #FFF;
-    margin: 0px 0px 0px 0px;
+    background: url("../assets/bgIndex.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 2px 2px 2px 2px;
 }

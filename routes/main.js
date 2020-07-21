@@ -73,7 +73,7 @@ router.get("/login", function (req,res) {
 
 });
 router.get("/", middleware, function (req,res) {
-    res.sendFile(path.join(__dirname,"../","index.html"));
+    res.render("index");
 
 });
 
