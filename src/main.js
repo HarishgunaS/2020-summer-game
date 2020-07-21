@@ -1,8 +1,12 @@
 
 var config = {
     type: Phaser.AUTO,
-    width: window.innerWidth * window.devicePixelRatio,
-    height: window.innerHeight * window.devicePixelRatio,
+    scale: {
+        mode: Phaser.Scale.RESIZE,
+        parent: null,
+        width: '80%',
+        height: '80%'
+    },
     physics: {
         default: 'arcade',
         arcade: {
