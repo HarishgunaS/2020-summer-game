@@ -1,47 +1,28 @@
-//Using mongoose for the database and bycrypt for hashing the passwords
-const mongoose = require("mongoose");
-const bycrypt = require("bycrypt");
+//Using mongoose for the database
+let mongoose = require("mongoose");
 
-const Schema = mongoose.Schema;
-//Schema includes email(uniquw), password, name, userID(unique) and highScore (initialized to0)
-const UserSchema = new Schema({
+let passportLocalMongoose = require("passport-local-mongoose");
 
-    email:{
-        type:String,
-        required : true,
-        unique: true
-    },
-    password:{
-        type: String,
-        required: true
-    },
-    name:{
-        type:String,
-        required: true
-    },
-    userID:{
-        type: String,
-        required: true,
-        unique: true
-    },
+
+
+//Schema includes email(unique), password, name, userID(unique) and highScore (initialized to0)
+const UserSchema = new mongoose.Schema({
+
+
+
+
+    username:String,
+    password:String,
+
     highScore:{
         type: Number,
         default: 0
     }
 
 });
-//reference to the doc being saved
-UserSchema.pre('save', async function (next) {
-    const user = this;
-    const hash = await bcrypt.hash(this.password, 10);
-    this.password = hash;
-    next();
-});
-//to check if right password is entered
-UserSchema.methods.isValidPassword = async function (password) {
-    const user = this;
-    const compare = await bcrypt.compare(password, user.password);
-    return compare;
-}
-//model created here
-const UserModel = mongoose.model('user', UserScema);
+//Adding passport-local-mogoose methods to UserSchema
+UserSchema.plugin(passportLocalMongoose);
+
+
+//User model, with 5 objects, 1 middleware and 1 method being exported
+module.exports = mongoose.model('user', UserSchema);
